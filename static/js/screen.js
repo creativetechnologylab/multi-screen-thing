@@ -71,16 +71,44 @@ function display( data ) {
 	prepareNext();
 }
 
-function loadImage( src ) {
-	console.log( src );
+function loadImage(imagePath) {
+  var mediaContainer = document.querySelector("#mediaContainer");
+  var imageElement = '<img src="' + imagePath + '" class="fullscreen">';
+  $(mediaContainer).empty();
+  $(mediaContainer).append(imageElement);
+	console.log("loadImage(" + imagePath + ")");
 }
 
-function loadVideo( src ) {
-	console.log( src );
+function loadVideo(videoPath) {
+  var mediaContainer = document.querySelector("#mediaContainer");
+  var videoElement = '<video src="' + videoPath +'" autoplay class="fullscreen"></video>';
+  $(mediaContainer).empty();
+  $(mediaContainer).append(videoElement);
+	console.log("loadVideo(" + videoPath + ")");
+}
+
+function loadAudio(audioPath) {
+  var mediaContainer = document.querySelector("#mediaContainer");
+  var audioElement = '<audio autoplay src="' + audioPath + '"></audio>';
+  $(mediaContainer).empty();
+  $(mediaContainer).append(audioElement);
+	console.log("loadAudio(" + audioPath + ")");
+}
+
+function loadImageWithAudio(imagePath, audioPath) {
+  var mediaContainer = document.querySelector("#mediaContainer");
+  var imageElement = '<img src="' + imagePath + '" class="fullscreen">';
+	var audioElement = '<audio autoplay src="' + audioPath + '"></audio>';
+  $(mediaContainer).empty();
+  $(mediaContainer).append(imageElement);
+  $(mediaContainer).append(audioElement);
+	console.log("loadImageWithAudio(" + imagePath + ", " + audioPath + ")");
 }
 
 function blank() {
-	console.log( 'blanked screen' );
+  var mediaContainer = document.querySelector("#mediaContainer");
+  $(mediaContainer).empty();
+	console.log("blank()");
 }
 
 function finished() {

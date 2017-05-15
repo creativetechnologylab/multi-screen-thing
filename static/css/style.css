@@ -1,0 +1,8 @@
+.a-box {
+	height: 300px;
+}
+
+.a-box ol {
+	height: 170px;
+	overflow: scroll;
+}

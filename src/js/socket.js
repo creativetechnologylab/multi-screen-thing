@@ -3,10 +3,10 @@ var __src = __home + '/src';
 var __js = __src + '/js';
 
 var sio = require( 'socket.io' );
-var memory = {};
+var assets = {};
 
-module.exports = function( http, m ) {
-	memory = m;
+module.exports = function( http, a ) {
+	assets = a;
 	var io = sio( http );
 	io.on( 'connection', connected );
 	return io;

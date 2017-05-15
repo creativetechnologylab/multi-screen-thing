@@ -7,7 +7,7 @@ var __js = __src + '/js';
 
 var config = require( __config );
 
-var asset = {};
+var assets = {};
 
 var express = require( 'express' ),
 	app = express(),
@@ -15,7 +15,7 @@ var express = require( 'express' ),
 	body = require( 'body-parser' ),
 	app_loader = require( __js + '/app-loader' );
 
-var io = require( __js + '/socket.js' )( http, memory );
+var io = require( __js + '/socket.js' )( http, assets );
 
 console.log( "Starting..." );
 
@@ -32,7 +32,7 @@ app.use( body.urlencoded( { extended: true } ) );
 app.use( body.json() );
 
 // Load apps
-app_loader( app, memory, io );
+app_loader( app, assets, io );
 
 // Start server
 var listener = http.listen( config.port ,config.host, function () {

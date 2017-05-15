@@ -1,0 +1,8 @@
+{
+	"times": {
+		"0.00":	{ "type": "image", "url": "1.jpg" },
+		"2.50": { "type": "blank" },
+		"5.00": { "type": "image", "url": "2.jpg" },
+		"10.00": { "type": "blank" }
+	}
+}

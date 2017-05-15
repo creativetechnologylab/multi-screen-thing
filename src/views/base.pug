@@ -2,20 +2,12 @@ doctype html
 html
 	head
 		meta( charset="utf-8" )
-		block title
-			if title
-				title #{ title } &mdash; Lab API
-			else
-				title Lab API
 		block head
 			block css
-				link( rel="stylesheet", href="/css/bootstrap.min.css" )
 				link( rel="stylesheet", href="/css/style.css" )
 			block js
 				script( src="/socket.io/socket.io.js" )
 				script( src="/js/jquery.js" )
-				script( src="/js/bootstrap.js" )
-				script( src="/js/script.js" )
 	body
 		block body
 			.container

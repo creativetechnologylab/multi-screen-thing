@@ -13,5 +13,8 @@ module.exports = function( http, a ) {
 };
 
 function connected( socket ) {
-
+	socket.on( 'start', function() {
+		console.log( 'Starting playback...' );
+		var time = new Date();
+	} );
 }

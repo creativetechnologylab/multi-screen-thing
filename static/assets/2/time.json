@@ -1,8 +1,15 @@
 {
 	"times": {
-		"0.00":	{ "type": "image", "url": "1.jpg" },
-		"2.50": { "type": "blank" },
-		"5.00": { "type": "image", "url": "2.jpg" },
-		"10.00": { "type": "blank" }
+		"0.00":	{ "type": "image", "image": "1.jpg" },
+		"1.00": { "type": "colour", "colour": "white" },
+		"1.05": { "type": "blank" },
+		"1.10": { "type": "colour", "colour": "white" },
+		"1.15": { "type": "blank" },
+		"1.20": { "type": "colour", "colour": "white" },
+		"1.25": { "type": "blank" },
+		"1.30": { "type": "colour", "colour": "white" },
+		"1.35": { "type": "blank" },
+		"5.00": { "type": "video", "video": "3.mp4" },
+		"10.00": { "type": "end" }
 	}
 }

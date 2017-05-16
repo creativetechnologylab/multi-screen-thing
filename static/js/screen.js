@@ -35,8 +35,6 @@ function prepareNext() {
 	var key = keys.pop();
 	var time = key * 1000;
 
-	console.log( 'Preparing for next: ' + time );
-
 	setTimeoutFromStartTime( function() {
 		display( times[ key ] );
 	}, time );
@@ -46,9 +44,8 @@ function setTimeoutFromStartTime( cb, time ) {
 	var start = date.clone().add( time, 'ms' );
 	var callbackTime = start.diff( moment(), 'ms' );
 
-	console.log( callbackTime );
+	console.log( 'Next action in: ' + callbackTime + 'ms.' );
 
-	// Skip if this is in the past
 	if ( callbackTime <= 0 ) return prepareNext();
 
 	if ( timer ) {
@@ -61,20 +58,26 @@ function setTimeoutFromStartTime( cb, time ) {
 function display( data ) {
 	if ( data.type ) {
 		switch ( data.type ) {
-			case 'image-with-audio':
-				loadImageWithAudio( path + '/' + data.image, path + '/' + data.audio );
+			case 'audio':
+				loadAudio( path + '/' + data.audio );
 				break;
 			case 'colour':
 				colour( data.colour );
 				break;
 			case 'video':
-				loadVideo( path + '/' + data.url );
+				loadVideo( path + '/' + data.video );
 				break;
 			case 'image':
-				loadImage( path + '/' + data.url );
+				loadImage( path + '/' + data.image );
+				break;
+			case 'silence':
+				silence();
 				break;
 			case 'blank':
+				blank();
+				break;
 			default:
+				silence();
 				blank();
 				break;
 		}
@@ -84,33 +87,31 @@ function display( data ) {
 
 function loadImage( image ) {
 	blank();
-	jQuery( '#mediaContainer' ).append( '<img src="' + image + '" class="fullscreen">' );
-	console.log("loadImage(" + image + ")");
+	jQuery( '#media' ).append( '<img src="' + image + '" class="fullscreen">' );
+	console.log( 'loadImage( ' + image + ' )');
 }
 
 function loadVideo( video ) {
 	blank();
-	jQuery( '#mediaContainer' ).append( '<video src="' + video +'" autoplay class="fullscreen"></video>' );
-	console.log("loadVideo(" + video + ")");
+	jQuery( '#media' ).append( '<video src="' + video +'" autoplay class="fullscreen"></video>' );
+	console.log( 'loadVideo( ' + video + ' )');
 }
 
 function loadAudio( audio ) {
-	blank();
-	jQuery( '#mediaContainer' ).append( '<audio autoplay src="' + audio + '"></audio>' );
-	console.log("loadAudio(" + audio + ")");
+	silence();
+	jQuery( '#audio' ).append( '<audio autoplay src="' + audio + '"></audio>' );
+	console.log( 'loadAudio( ' + audio + ' )' );
 }
 
-function loadImageWithAudio( image, audio ) {
-	blank();
-	jQuery( '#mediaContainer' ).append( '<audio autoplay src="' + audio + '"></audio>' );
-	jQuery( '#mediaContainer' ).append( '<img src="' + image + '" class="fullscreen">' );
-	console.log("loadImageWithAudio(" + image + ", " + audio + ")");
+function silence() {
+	jQuery( '#audio' ).empty();
+	console.log( 'silence()' );
 }
 
 function colour( colour ) {
-	jQuery( '#mediaContainer' ).empty();
+	jQuery( '#media' ).empty();
 	jQuery( 'body' ).css( 'background-color', colour );
-	console.log( "colour( " + colour + " )");
+	console.log( 'colour( ' + colour + ' )');
 }
 
 function blank() {
@@ -119,6 +120,7 @@ function blank() {
 
 function finished() {
 	blank();
+	silence();
 	keys = Object.keys( times ).reverse();
-	console.log( 'finished' );
+	console.log( 'finished()' );
 }

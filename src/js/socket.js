@@ -18,7 +18,10 @@ function connected( socket ) {
 	socket.on( 'start', function() {
 		console.log( 'Starting playback...' );
 		var time = moment();
-		time.add( 3, 'seconds' );
+		time.add( 1, 'seconds' );
 		io.emit( 'start', time.toDate() );
+	} );
+	socket.on( 'reload', function() {
+		io.emit( 'reload' );
 	} );
 }

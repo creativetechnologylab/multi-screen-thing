@@ -3,13 +3,14 @@ var socket = io();
 var date;
 var timer;
 
+var path = '/assets/';
+
 var times = {};
 var keys = [];
 
 jQuery( document ).ready( function() {
-	var path = '/assets';
-	var id = jQuery( '#id' ).data( 'id' );
-	jQuery.get( path + '/' + id + '/time.json', processData );
+	path += jQuery( '#id' ).data( 'id' );
+	jQuery.get( path + '/time.json', processData );
 } );
 
 function processData( data ) {
@@ -24,10 +25,14 @@ socket.on( 'start', function( msg ) {
 	prepareNext();
 } );
 
+socket.on( 'reload', function() {
+	location.reload();
+} );
+
 function prepareNext() {
 	if ( keys.length < 1 ) return finished();
 
-	var key = keys.pop()
+	var key = keys.pop();
 	var time = key * 1000;
 
 	console.log( 'Preparing for next: ' + time );
@@ -44,7 +49,7 @@ function setTimeoutFromStartTime( cb, time ) {
 	console.log( callbackTime );
 
 	// Skip if this is in the past
-	if ( time <= 0 ) return prepareNext();
+	if ( callbackTime <= 0 ) return prepareNext();
 
 	if ( timer ) {
 		clearTimeout( timer );
@@ -56,11 +61,17 @@ function setTimeoutFromStartTime( cb, time ) {
 function display( data ) {
 	if ( data.type ) {
 		switch ( data.type ) {
+			case 'image-with-audio':
+				loadImageWithAudio( path + '/' + data.image, path + '/' + data.audio );
+				break;
+			case 'colour':
+				colour( data.colour );
+				break;
 			case 'video':
-				loadVideo( data.url );
+				loadVideo( path + '/' + data.url );
 				break;
 			case 'image':
-				loadImage( data.url );
+				loadImage( path + '/' + data.url );
 				break;
 			case 'blank':
 			default:
@@ -71,44 +82,39 @@ function display( data ) {
 	prepareNext();
 }
 
-function loadImage(imagePath) {
-  var mediaContainer = document.querySelector("#mediaContainer");
-  var imageElement = '<img src="' + imagePath + '" class="fullscreen">';
-  $(mediaContainer).empty();
-  $(mediaContainer).append(imageElement);
-	console.log("loadImage(" + imagePath + ")");
+function loadImage( image ) {
+	blank();
+	jQuery( '#mediaContainer' ).append( '<img src="' + image + '" class="fullscreen">' );
+	console.log("loadImage(" + image + ")");
 }
 
-function loadVideo(videoPath) {
-  var mediaContainer = document.querySelector("#mediaContainer");
-  var videoElement = '<video src="' + videoPath +'" autoplay class="fullscreen"></video>';
-  $(mediaContainer).empty();
-  $(mediaContainer).append(videoElement);
-	console.log("loadVideo(" + videoPath + ")");
+function loadVideo( video ) {
+	blank();
+	jQuery( '#mediaContainer' ).append( '<video src="' + video +'" autoplay class="fullscreen"></video>' );
+	console.log("loadVideo(" + video + ")");
 }
 
-function loadAudio(audioPath) {
-  var mediaContainer = document.querySelector("#mediaContainer");
-  var audioElement = '<audio autoplay src="' + audioPath + '"></audio>';
-  $(mediaContainer).empty();
-  $(mediaContainer).append(audioElement);
-	console.log("loadAudio(" + audioPath + ")");
+function loadAudio( audio ) {
+	blank();
+	jQuery( '#mediaContainer' ).append( '<audio autoplay src="' + audio + '"></audio>' );
+	console.log("loadAudio(" + audio + ")");
 }
 
-function loadImageWithAudio(imagePath, audioPath) {
-  var mediaContainer = document.querySelector("#mediaContainer");
-  var imageElement = '<img src="' + imagePath + '" class="fullscreen">';
-	var audioElement = '<audio autoplay src="' + audioPath + '"></audio>';
-  $(mediaContainer).empty();
-  $(mediaContainer).append(imageElement);
-  $(mediaContainer).append(audioElement);
-	console.log("loadImageWithAudio(" + imagePath + ", " + audioPath + ")");
+function loadImageWithAudio( image, audio ) {
+	blank();
+	jQuery( '#mediaContainer' ).append( '<audio autoplay src="' + audio + '"></audio>' );
+	jQuery( '#mediaContainer' ).append( '<img src="' + image + '" class="fullscreen">' );
+	console.log("loadImageWithAudio(" + image + ", " + audio + ")");
+}
+
+function colour( colour ) {
+	jQuery( '#mediaContainer' ).empty();
+	jQuery( 'body' ).css( 'background-color', colour );
+	console.log( "colour( " + colour + " )");
 }
 
 function blank() {
-  var mediaContainer = document.querySelector("#mediaContainer");
-  $(mediaContainer).empty();
-	console.log("blank()");
+	colour( 'black' );
 }
 
 function finished() {

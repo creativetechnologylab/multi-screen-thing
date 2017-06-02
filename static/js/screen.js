@@ -33,9 +33,10 @@ function prepareNext() {
 	if ( keys.length < 1 ) return finished();
 
 	var key = keys.pop();
-	var time = key * 1000;
+	var time = parseInt( parseFloat( key.split( ':' )[0] * 60 ) + parseFloat( key.split( ':' )[1] ) ) * 1000;
 
 	setTimeoutFromStartTime( function() {
+		console.log( key );
 		display( times[ key ] );
 	}, time );
 }
@@ -43,8 +44,6 @@ function prepareNext() {
 function setTimeoutFromStartTime( cb, time ) {
 	var start = date.clone().add( time, 'ms' );
 	var callbackTime = start.diff( moment(), 'ms' );
-
-	console.log( 'Next action in: ' + callbackTime + 'ms.' );
 
 	if ( callbackTime <= 0 ) return prepareNext();
 
@@ -59,13 +58,17 @@ function display( data ) {
 	if ( data.type ) {
 		switch ( data.type ) {
 			case 'audio':
-				loadAudio( path + '/' + data.audio );
+				loadAudio( path + '/' + data.audio, data.volume );
 				break;
 			case 'colour':
 				colour( data.colour );
 				break;
 			case 'video':
-				loadVideo( path + '/' + data.video );
+				loadVideo( path + '/' + data.video, data.volume );
+				break;
+			case 'volume':
+				if ( isNumber( data.audio ) ) audioVolume( data.audio, data.speed );
+				if ( isNumber( data.video ) ) videoVolume( data.video, data.speed );
 				break;
 			case 'image':
 				loadImage( path + '/' + data.image );
@@ -91,18 +94,39 @@ function loadImage( image ) {
 	console.log( 'loadImage( ' + image + ' )');
 }
 
-function loadVideo( video ) {
+function loadVideo( video, volume ) {
 	blank();
-	jQuery( '#media' ).append( '<video src="' + video +'" autoplay class="fullscreen"></video>' );
+	var v = jQuery( '<video src="' + video +'" autoplay class="fullscreen"></video>' );
+	jQuery( '#media' ).append( v );
+	if ( volume ) jQuery( v ).prop( 'volume', volume );
 	console.log( 'loadVideo( ' + video + ' )');
 }
 
-function loadAudio( audio ) {
+function videoVolume( volume, speed ) {
+	if ( speed ) {
+		jQuery( '#media video' ).animate( { volume: volume }, speed );
+	} else {
+		jQuery( '#media video' ).prop( 'volume', volume );
+	}
+	console.log( 'videoVolume( ' + volume + ' )');
+}
+
+function loadAudio( audio, volume ) {
 	silence();
-	jQuery( '#audio' ).append( '<audio autoplay src="' + audio + '"></audio>' );
+	var a = jQuery( '<audio autoplay src="' + audio + '"></audio>' );
+	jQuery( '#audio' ).append( a );
+	if ( volume ) jQuery( a ).prop( 'volume', volume );
 	console.log( 'loadAudio( ' + audio + ' )' );
 }
 
+function audioVolume( volume, speed ) {
+	if ( speed ) {
+		jQuery( '#audio audio' ).animate( { volume: volume }, speed );
+	} else {
+		jQuery( '#audio audio' ).prop( 'volume', volume );
+	}
+	console.log( 'audioVolume( ' + volume + ' )');
+}
 function silence() {
 	jQuery( '#audio' ).empty();
 	console.log( 'silence()' );
@@ -123,4 +147,8 @@ function finished() {
 	silence();
 	keys = Object.keys( times ).reverse();
 	console.log( 'finished()' );
+}
+
+function isNumber( n ) {
+	return Number(n) === n;
 }

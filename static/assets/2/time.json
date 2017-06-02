@@ -1,15 +1,15 @@
 {
+	"screen": 2,
 	"times": {
-		"0.00":	{ "type": "image", "image": "1.jpg" },
-		"1.00": { "type": "colour", "colour": "white" },
-		"1.05": { "type": "blank" },
-		"1.10": { "type": "colour", "colour": "white" },
-		"1.15": { "type": "blank" },
-		"1.20": { "type": "colour", "colour": "white" },
-		"1.25": { "type": "blank" },
-		"1.30": { "type": "colour", "colour": "white" },
-		"1.35": { "type": "blank" },
-		"5.00": { "type": "video", "video": "3.mp4" },
-		"10.00": { "type": "end" }
+		"00:00.00": { "type": "blank" },
+		"00:08.00": { "type": "video", "video": "02.mp4", "volume": 0 },
+		"00:08.01": { "type": "volume", "video": 1, "speed": 1000 },
+		"00:14.00": { "type": "volume", "video": 0 },
+		"00:25.00": { "type": "video", "video": "15022011071.mp4" },
+		"00:34.00": { "type": "volume", "video": 0, "speed": 1000 },
+		"00:35.00": { "type": "audio", "audio": "vo-1.mp3" },
+		"00:42.00": { "type": "image", "image": "DSC_2685.JPG" },
+		"00:57.00": { "type": "image", "image": "DSC_3476.JPG" },
+		"01:00.00": { "type": "end" }
 	}
 }
